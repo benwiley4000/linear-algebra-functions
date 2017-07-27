@@ -45,6 +45,8 @@ function thetaBetweenVectors (n, vecA, vecB) {
   );
 }
 
+const TOLERANCE = 0.005;
+
 function vectorsAreParallel (vecA, vecB) {
   if (vecA.length !== vecB.length) {
     return false;
@@ -54,7 +56,7 @@ function vectorsAreParallel (vecA, vecB) {
   }
   const ratio = vecA[0] / vecB[0];
   for (let i = 1, len = vecA.length; i < len; i++) {
-    if (vecA[i] / vecB[i] !== ratio) {
+    if (Math.abs(vecA[i] / vecB[i] - ratio) > TOLERANCE) {
       return false;
     }
   }
@@ -65,7 +67,7 @@ function vectorsAreOrthogonal (vecA, vecB) {
   if (vecA.length !== vecB.length) {
     return false;
   }
-  return dotProduct(vecA.length, vecA, vecB) === 0;
+  return Math.abs(dotProduct(vecA.length, vecA, vecB)) < TOLERANCE;
 }
 
 module.exports = {
