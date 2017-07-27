@@ -4,8 +4,8 @@
  * https://www.udacity.com/course/linear-algebra-refresher-course--ud953
  **/
 
-var test = require('tape');
-var la = require('.');
+const test = require('tape');
+const la = require('.');
 
 // https://stackoverflow.com/a/31002148
 const fixedForTolerance = -Math.floor(Math.log(la.TOLERANCE) / Math.log(10));
