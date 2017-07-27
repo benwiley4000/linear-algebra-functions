@@ -45,6 +45,29 @@ function thetaBetweenVectors (n, vecA, vecB) {
   );
 }
 
+function vectorsAreParallel (vecA, vecB) {
+  if (vecA.length !== vecB.length) {
+    return false;
+  }
+  if (vecA.length === 1) {
+    return true;
+  }
+  const ratio = vecA[0] / vecB[0];
+  for (let i = 1, len = vecA.length; i < len; i++) {
+    if (vecA[i] / vecB[i] !== ratio) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function vectorsAreOrthogonal (vecA, vecB) {
+  if (vecA.length !== vecB.length) {
+    return false;
+  }
+  return dotProduct(vecA.length, vecA, vecB) === 0;
+}
+
 module.exports = {
   addVectors,
   subtractVectors,
@@ -53,5 +76,7 @@ module.exports = {
   unitVector,
   dotProduct,
   thetaBetweenVectors,
+  vectorsAreParallel,
+  vectorsAreOrthogonal,
 };
 
