@@ -81,5 +81,5 @@ module.exports = {
   thetaBetweenVectors,
   vectorsAreParallel,
   vectorsAreOrthogonal,
-  TOLERANCE,
+  TOLERANCE
 };
