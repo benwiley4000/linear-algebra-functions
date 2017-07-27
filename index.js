@@ -67,7 +67,7 @@ function vectorsAreOrthogonal (vecA, vecB) {
   if (vecA.length !== vecB.length) {
     return false;
   }
-  return Math.abs(dotProduct(vecA.length, vecA, vecB)) < TOLERANCE;
+  return Math.abs(dotProduct(vecA.length, vecA, vecB)) <= TOLERANCE;
 }
 
 module.exports = {
