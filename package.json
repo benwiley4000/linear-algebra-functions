@@ -1,0 +1,26 @@
+{
+  "name": "linear-algebra-functions",
+  "version": "0.1.0",
+  "description": "A collection of linear algebra functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "linear",
+    "algebra",
+    "matrix",
+    "matrices",
+    "math"
+  ],
+  "author": "Ben Wiley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benwiley4000/linear-algebra-functions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benwiley4000/linear-algebra-functions/issues"
+  },
+  "homepage": "https://github.com/benwiley4000/linear-algebra-functions#readme"
+}
