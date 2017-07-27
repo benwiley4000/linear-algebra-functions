@@ -38,11 +38,12 @@ function dotProduct (n, vecA, vecB) {
   return res;
 }
 
-function thetaBetweenVectors (n, vecA, vecB) {
-  return Math.acos(
+function thetaBetweenVectors (n, vecA, vecB, useDegrees) {
+  const theta = Math.acos(
     dotProduct(n, vecA, vecB) /
     (magnitudeOfVector(vecA) * magnitudeOfVector(vecB))
   );
+  return useDegrees ? theta * 180 / Math.PI : theta;
 }
 
 const TOLERANCE = 0.001;
