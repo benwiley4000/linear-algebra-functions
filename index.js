@@ -45,7 +45,7 @@ function thetaBetweenVectors (n, vecA, vecB) {
   );
 }
 
-const TOLERANCE = 0.005;
+const TOLERANCE = 0.001;
 
 function vectorsAreParallel (vecA, vecB) {
   if (vecA.length !== vecB.length) {
@@ -80,4 +80,5 @@ module.exports = {
   thetaBetweenVectors,
   vectorsAreParallel,
   vectorsAreOrthogonal,
+  TOLERANCE,
 };
