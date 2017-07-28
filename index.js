@@ -55,6 +55,28 @@ function orthogonalComponent (n, vec, basis) {
   return subtractVectors(n, vec, vectorProjection(n, vec, basis));
 }
 
+function crossProduct (vecA, vecB) {
+  const x1 = vecA[0];
+  const y1 = vecA[1];
+  const z1 = vecA[2] || 0;
+  const x2 = vecB[0];
+  const y2 = vecB[1];
+  const z2 = vecB[2] || 0;
+  return [
+    y1 * z2 - y2 * z1,
+    -(x1 * z2 - x2 * z1),
+    x1 * y2 - x2 * y1
+  ];
+}
+
+function areaVectorParallelogram (vecA, vecB) {
+  return magnitudeOfVector(crossProduct(vecA, vecB));
+}
+
+function areaVectorTriangle (vecA, vecB) {
+  return areaVectorParallelogram(vecA, vecB) / 2;
+}
+
 const TOLERANCE = 0.001;
 
 function vectorsAreParallel (vecA, vecB) {
@@ -90,6 +112,9 @@ module.exports = {
   thetaBetweenVectors,
   vectorProjection,
   orthogonalComponent,
+  crossProduct,
+  areaVectorParallelogram,
+  areaVectorTriangle,
   vectorsAreParallel,
   vectorsAreOrthogonal,
   TOLERANCE

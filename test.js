@@ -145,6 +145,33 @@ test('Finds orthogonal component of vector against basis vector', t => {
   });
 });
 
+test('Finds cross product of two vectors', t => {
+  t.test('[8.462 7.893 -8.187] × [6.984 -5.975 4.778] = [-11.205 -97.609 -105.685]', st => {
+    st.plan(3);
+    const res = la.crossProduct([8.462, 7.893, -8.187], [6.984, -5.975, 4.778]);
+    st.equal(fix(res[0]), fix(-11.205));
+    st.equal(fix(res[1]), fix(-97.609));
+    st.equal(fix(res[2]), fix(-105.685));
+  });
+});
+
+test('Finds area of parallelogram spanned by two vectors', t => {
+  t.test('Area of parallelogram spanned by [8.462 7.893 -8.187], [6.984 -5.975 4.778] = 144.300', st => {
+    st.plan(1);
+    const res = la.areaVectorParallelogram([8.462, 7.893, -8.187], [6.984, -5.975, 4.778]);
+    st.equal(fix(res), fix(144.300));
+  });
+});
+
+test('Finds area of triangle spanned by two vectors', t => {
+  t.test('Area of triangle spanned by [8.462 7.893 -8.187], [6.984 -5.975 4.778] = 72.150', st => {
+    st.plan(1);
+    const res = la.areaVectorTriangle([8.462, 7.893, -8.187], [6.984, -5.975, 4.778]);
+    console.log(res);
+    st.equal(fix(res), fix(72.150));
+  });
+});
+
 test('Checks if two vectors are parallel', t => {
   t.test('[-7.579 -7.88], [22.737 23.64] ARE parallel', st => {
     st.plan(1);
