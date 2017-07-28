@@ -46,6 +46,15 @@ function thetaBetweenVectors (n, vecA, vecB, useDegrees) {
   return useDegrees ? theta * 180 / Math.PI : theta;
 }
 
+function vectorProjection (n, vec, basis) {
+  basisUnit = unitVector(basis);
+  return scalarMultiplyVector(dotProduct(n, vec, basisUnit), basisUnit);
+}
+
+function orthogonalComponent (n, vec, basis) {
+  return subtractVectors(n, vec, vectorProjection(n, vec, basis));
+}
+
 const TOLERANCE = 0.001;
 
 function vectorsAreParallel (vecA, vecB) {
@@ -79,6 +88,8 @@ module.exports = {
   unitVector,
   dotProduct,
   thetaBetweenVectors,
+  vectorProjection,
+  orthogonalComponent,
   vectorsAreParallel,
   vectorsAreOrthogonal,
   TOLERANCE

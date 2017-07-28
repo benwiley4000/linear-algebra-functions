@@ -108,6 +108,43 @@ test('Computes angle between two vectors', t => {
   });
 });
 
+test('Finds projection of vector against basis vector', t => {
+  t.test('Projection of [3.039 1.879] onto [0.825 2.036] = [1.083, 2.672]', st => {
+    st.plan(2);
+    const res = la.vectorProjection(2, [3.039, 1.879], [0.825, 2.036]);
+    st.equal(fix(res[0]), fix(1.083));
+    st.equal(fix(res[1]), fix(2.672));
+  });
+
+  t.test('Projection of [3.009 -6.172 3.692 -2.51] onto [6.404 -9.144 2.759 8.718] = [1.969 -2.811 0.848 2.680]', st => {
+    st.plan(4);
+    const res = la.vectorProjection(4, [3.009, -6.172, 3.692, -2.51], [6.404, -9.144, 2.759, 8.718]);
+    st.equal(fix(res[0]), fix(1.969));
+    st.equal(fix(res[1]), fix(-2.811));
+    st.equal(fix(res[2]), fix(0.848));
+    st.equal(fix(res[3]), fix(2.680));
+  });
+});
+
+test('Finds orthogonal component of vector against basis vector', t => {
+  t.test('Orthogonal component of [-9.88 -3.264 -8.159] against [-2.155 -9.353 -9.473] = [-8.350 3.376 -1.434]', st => {
+    st.plan(3);
+    const res = la.orthogonalComponent(3, [-9.88, -3.264, -8.159], [-2.155, -9.353, -9.473]);
+    st.equal(fix(res[0]), fix(-8.350));
+    st.equal(fix(res[1]), fix(3.376));
+    st.equal(fix(res[2]), fix(-1.434));
+  });
+
+  t.test('Orthogonal component of [3.009 -6.172 3.692 -2.51] against [6.404 -9.144 2.759 8.718] = [1.040 -3.361 2.844 -5.190]', st => {
+    st.plan(4);
+    const res = la.orthogonalComponent(4, [3.009, -6.172, 3.692, -2.51], [6.404, -9.144, 2.759, 8.718]);
+    st.equal(fix(res[0]), fix(1.040));
+    st.equal(fix(res[1]), fix(-3.361));
+    st.equal(fix(res[2]), fix(2.844));
+    st.equal(fix(res[3]), fix(-5.190));
+  });
+});
+
 test('Checks if two vectors are parallel', t => {
   t.test('[-7.579 -7.88], [22.737 23.64] ARE parallel', st => {
     st.plan(1);
