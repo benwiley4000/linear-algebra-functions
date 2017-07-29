@@ -7,11 +7,8 @@
 const test = require('tape');
 const la = require('.');
 
-// https://stackoverflow.com/a/31002148
-const fixedForTolerance = -Math.floor(Math.log(la.TOLERANCE) / Math.log(10));
-
 function fix (num) {
-  return num.toFixed(fixedForTolerance);
+  return num.toFixed(3);
 }
 
 test('Adds vectors', t => {
