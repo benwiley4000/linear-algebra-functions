@@ -164,7 +164,6 @@ test('Finds area of triangle spanned by two vectors', t => {
   t.test('Area of triangle spanned by [8.462 7.893 -8.187], [6.984 -5.975 4.778] = 72.150', st => {
     st.plan(1);
     const res = v.areaOfTriangle([8.462, 7.893, -8.187], [6.984, -5.975, 4.778]);
-    console.log(res);
     st.equal(fix(res), fix(72.150));
   });
 });
