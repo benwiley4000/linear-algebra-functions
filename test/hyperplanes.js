@@ -7,6 +7,7 @@
 const test = require('tape');
 const h = require('../lib/hyperplanes');
 const isCloseToZero = require('../lib/util/isCloseToZero');
+const fix = require('./testhelpers/fix');
 
 function random (min = -100, max = 100) {
   return Math.random() * (max - min) - min;
@@ -76,4 +77,73 @@ test('Line cannot be defined with all-zero coefficients', t => {
   t.throws(() => {
     const line = new h.Line(0, 0, constant);
   }, hyperplaneErrorRegex);
+});
+
+test('Tests intersections of two lines', t => {
+  const lineSetA = [
+    new h.Line(4.046, 2.836, -1.21),
+    new h.Line(10.115, 7.09, -3.025)
+  ];
+  const lineSetB = [
+    new h.Line(7.204, 3.182, -8.68),
+    new h.Line(8.172, 4.114, -9.883)
+  ];
+  const lineSetC = [
+    new h.Line(1.182, 5.562, -6.744),
+    new h.Line(1.773, 8.343, -9.525)
+  ];
+
+  t.test('Determines if two lines are parallel', st => {
+    st.test(`${lineSetA[0]} and ${lineSetA[1]} ARE parallel`, sst => {
+      sst.plan(1);
+      sst.ok(h.linesAreParallel(...lineSetA));
+    });
+
+    st.test(`${lineSetB[0]} and ${lineSetB[1]} ARE NOT parallel`, sst => {
+      sst.plan(1);
+      sst.notOk(h.linesAreParallel(...lineSetB));
+    });
+
+    st.test(`${lineSetC[0]} and ${lineSetC[1]} ARE parallel`, sst => {
+      sst.plan(1);
+      sst.ok(h.linesAreParallel(...lineSetC));
+    });
+  });
+
+  t.test('Determines if two lines are equal', st => {
+    st.test(`${lineSetA[0]} and ${lineSetA[1]} ARE equal`, sst => {
+      sst.plan(1);
+      sst.ok(h.linesAreEqual(...lineSetA));
+    });
+
+    st.test(`${lineSetB[0]} and ${lineSetB[1]} ARE NOT equal`, sst => {
+      sst.plan(1);
+      sst.notOk(h.linesAreEqual(...lineSetB));
+    });
+
+    st.test(`${lineSetC[0]} and ${lineSetC[1]} ARE NOT equal`, sst => {
+      sst.plan(1);
+      sst.notOk(h.linesAreEqual(...lineSetC));
+    });
+  });
+
+  t.test('Finds the intersection point of two lines', st => {
+    st.test(`${lineSetA[0]} and ${lineSetA[1]} intersect infinitely many times`, sst => {
+      sst.plan(1);
+      sst.equal(h.intersectionPoint(...lineSetA).intersectionType, 'infinite');
+    });
+
+    st.test(`${lineSetB[0]} and ${lineSetB[1]} intersect at `, sst => {
+      sst.plan(3);
+      const ip = h.intersectionPoint(...lineSetB);
+      sst.equal(ip.intersectionType, 'single');
+      sst.equal(fix(ip.point[0]), fix(1.173));
+      sst.equal(fix(ip.point[1]), fix(0.073));
+    });
+
+    st.test(`${lineSetC[0]} and ${lineSetC[1]} do not intersect`, sst => {
+      sst.plan(1);
+      sst.equal(h.intersectionPoint(...lineSetC).intersectionType, 'none');
+    });
+  });
 });

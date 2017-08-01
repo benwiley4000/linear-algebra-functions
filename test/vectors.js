@@ -6,10 +6,7 @@
 
 const test = require('tape');
 const v = require('../lib/vectors');
-
-function fix (num) {
-  return num.toFixed(3);
-}
+const fix = require('./testhelpers/fix');
 
 test('Adds vectors', t => {
   t.test('[8.218 -9.341] + [-1.129 2.111] = [7.089 -7.230]', st => {
