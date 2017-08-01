@@ -147,3 +147,52 @@ test('Tests intersections of two lines', t => {
     });
   });
 });
+
+test('Tests intersections of two planes', t => {
+  const planeSetA = [
+    new h.Hyperplane([-0.412, 3.806, 0.728], 3.46),
+    new h.Hyperplane([1.03, -9.515, -1.82], -8.65)
+  ];
+  const planeSetB = [
+    new h.Hyperplane([2.611, 5.528, 0.283], -4.6),
+    new h.Hyperplane([7.715, 8.306, 5.342], -3.76)
+  ];
+  const planeSetC = [
+    new h.Hyperplane([-7.926, 8.625, -7.212], 7.952),
+    new h.Hyperplane([-2.642, 2.875, -2.404], 2.443)
+  ];
+
+  t.test('Determines if two planes are parallel', st => {
+    st.test(`${planeSetA[0]} and ${planeSetA[1]} ARE parallel`, sst => {
+      sst.plan(1);
+      sst.ok(h.hyperplanesAreParallel(...planeSetA));
+    });
+
+    st.test(`${planeSetB[0]} and ${planeSetB[1]} ARE NOT parallel`, sst => {
+      sst.plan(1);
+      sst.notOk(h.hyperplanesAreParallel(...planeSetB));
+    });
+
+    st.test(`${planeSetC[0]} and ${planeSetC[1]} ARE parallel`, sst => {
+      sst.plan(1);
+      sst.ok(h.hyperplanesAreParallel(...planeSetC));
+    });
+  });
+
+  t.test('Determines if two planes are equal', st => {
+    st.test(`${planeSetA[0]} and ${planeSetA[1]} ARE equal`, sst => {
+      sst.plan(1);
+      sst.ok(h.hyperplanesAreEqual(...planeSetA));
+    });
+
+    st.test(`${planeSetB[0]} and ${planeSetB[1]} ARE NOT equal`, sst => {
+      sst.plan(1);
+      sst.notOk(h.hyperplanesAreEqual(...planeSetB));
+    });
+
+    st.test(`${planeSetC[0]} and ${planeSetC[1]} ARE NOT equal`, sst => {
+      sst.plan(1);
+      sst.notOk(h.hyperplanesAreEqual(...planeSetC));
+    });
+  });
+});
