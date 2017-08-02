@@ -81,16 +81,16 @@ test('Line cannot be defined with all-zero coefficients', t => {
 
 test('Tests intersections of two lines', t => {
   const lineSetA = [
-    new h.Line(4.046, 2.836, -1.21),
-    new h.Line(10.115, 7.09, -3.025)
+    new h.Line(4.046, 2.836, 1.21),
+    new h.Line(10.115, 7.09, 3.025)
   ];
   const lineSetB = [
-    new h.Line(7.204, 3.182, -8.68),
-    new h.Line(8.172, 4.114, -9.883)
+    new h.Line(7.204, 3.182, 8.68),
+    new h.Line(8.172, 4.114, 9.883)
   ];
   const lineSetC = [
-    new h.Line(1.182, 5.562, -6.744),
-    new h.Line(1.773, 8.343, -9.525)
+    new h.Line(1.182, 5.562, 6.744),
+    new h.Line(1.773, 8.343, 9.525)
   ];
 
   t.test('Determines if two lines are parallel', st => {
@@ -150,16 +150,16 @@ test('Tests intersections of two lines', t => {
 
 test('Tests intersections of two planes', t => {
   const planeSetA = [
-    new h.Hyperplane([-0.412, 3.806, 0.728], 3.46),
-    new h.Hyperplane([1.03, -9.515, -1.82], -8.65)
+    new h.Hyperplane([-0.412, 3.806, 0.728], -3.46),
+    new h.Hyperplane([1.03, -9.515, -1.82], 8.65)
   ];
   const planeSetB = [
-    new h.Hyperplane([2.611, 5.528, 0.283], -4.6),
-    new h.Hyperplane([7.715, 8.306, 5.342], -3.76)
+    new h.Hyperplane([2.611, 5.528, 0.283], 4.6),
+    new h.Hyperplane([7.715, 8.306, 5.342], 3.76)
   ];
   const planeSetC = [
-    new h.Hyperplane([-7.926, 8.625, -7.212], 7.952),
-    new h.Hyperplane([-2.642, 2.875, -2.404], 2.443)
+    new h.Hyperplane([-7.926, 8.625, -7.212], -7.952),
+    new h.Hyperplane([-2.642, 2.875, -2.404], -2.443)
   ];
 
   t.test('Determines if two planes are parallel', st => {
