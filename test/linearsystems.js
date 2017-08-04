@@ -364,3 +364,92 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 });
+
+test('Computes triangular form of a system of equations', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  const system0TriangularForm = system0;
+  t.test(
+    'The following triangular form conversion is successful:\n' +
+    'The system:\n' +
+    system0 + '\n' +
+    'is converted to triangular form:\n' +
+    system0TriangularForm,
+    st => {
+      st.plan(1);
+      const { system } = l.toTriangularForm(system0);
+      st.deepEqual(system, system0TriangularForm);
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([1, 1, 1], 2)
+  ]);
+  const system1TriangularForm = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 0, 0], 1)
+  ]);
+  t.test(
+    'The following triangular form conversion is successful:\n' +
+    'The system:\n' +
+    system1 + '\n' +
+    'is converted to triangular form:\n' +
+    system1TriangularForm,
+    st => {
+      st.plan(1);
+      const { system } = l.toTriangularForm(system1);
+      st.deepEqual(system, system1TriangularForm);
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([1, 1, -1], 3),
+    new h.Hyperplane([1, 0, -2], 2)
+  ]);
+  const system2TriangularForm = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([0, 0, -2], 2),
+    new h.Hyperplane([0, 0, 0], 0)
+  ]);
+  t.test(
+    'The following triangular form conversion is successful:\n' +
+    'The system:\n' +
+    system2 + '\n' +
+    'is converted to triangular form:\n' +
+    system2TriangularForm,
+    st => {
+      st.plan(1);
+      const { system } = l.toTriangularForm(system2);
+      st.deepEqual(system, system2TriangularForm);
+    }
+  );
+
+  const system3 = new l.LinearSystem([
+    new h.Hyperplane([0, 1, 1], 1),
+    new h.Hyperplane([1, -1, 1], 2),
+    new h.Hyperplane([1, 2, -5], 3)
+  ]);
+  const system3TriangularForm = new l.LinearSystem([
+    new h.Hyperplane([1, -1, 1], 2),
+    new h.Hyperplane([0, 1, 1], 1),
+    new h.Hyperplane([0, 0, -9], -2)
+  ]);
+  t.test(
+    'The following triangular form conversion is successful:\n' +
+    'The system:\n' +
+    system3 + '\n' +
+    'is converted to triangular form:\n' +
+    system3TriangularForm,
+    st => {
+      st.plan(1);
+      const { system } = l.toTriangularForm(system3);
+      st.deepEqual(system, system3TriangularForm);
+    }
+  );
+});
