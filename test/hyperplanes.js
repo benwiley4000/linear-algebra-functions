@@ -69,6 +69,8 @@ test('Hyperplane cannot be defined with all-zero coefficients', t => {
   t.throws(() => {
     const hyperplane = new h.Hyperplane(coefficients, constant);
   }, hyperplaneErrorRegex);
+}, {
+  skip: true
 });
 
 test('Line cannot be defined with all-zero coefficients', t => {
@@ -77,6 +79,8 @@ test('Line cannot be defined with all-zero coefficients', t => {
   t.throws(() => {
     const line = new h.Line(0, 0, constant);
   }, hyperplaneErrorRegex);
+}, {
+  skip: true
 });
 
 test('Tests intersections of two lines', t => {
