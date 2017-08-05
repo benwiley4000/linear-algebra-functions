@@ -554,3 +554,199 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
     }
   );
 });
+
+test('Computes reduced row echelon form of a system of equations', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  const system0Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], -1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system0 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system0Rref,
+    st => {
+      st.plan(1);
+      const { system } = l.toRref(system0);
+      st.deepEqual(system, system0Rref);
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([1, 1, 1], 2)
+  ]);
+  const system1Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 0, 0], 1)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system1 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system1Rref,
+    st => {
+      st.plan(1);
+      const { system } = l.toRref(system1);
+      st.deepEqual(system, system1Rref);
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([1, 1, -1], 3),
+    new h.Hyperplane([1, 0, -2], 2)
+  ]);
+  const system2Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 0),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([0, 0, 1], -1),
+    new h.Hyperplane([0, 0, 0], 0)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system2 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system2Rref,
+    st => {
+      st.plan(1);
+      const { system } = l.toRref(system2);
+      st.deepEqual(system, system2Rref);
+    }
+  );
+
+  const system3 = new l.LinearSystem([
+    new h.Hyperplane([0, 1, 1], 1),
+    new h.Hyperplane([1, -1, 1], 2),
+    new h.Hyperplane([1, 2, -5], 3)
+  ]);
+  const system3Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 23/9),
+    new h.Hyperplane([0, 1, 0], 7/9),
+    new h.Hyperplane([0, 0, 1], 2/9)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system3 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system3Rref,
+    st => {
+      st.plan(1);
+      const { system } = l.toRref(system3);
+      st.deepEqual(system, system3Rref);
+    }
+  );
+});
+
+test('Emits re-runnable actions for producing reduced row echelon form of a system of equations', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  const system0Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], -1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system0 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system0Rref,
+    st => {
+      st.plan(1);
+      const { actions } = l.toRref(system0);
+      st.deepEqual(
+        actions.reduce(l.systemstore.reducer, system0),
+        system0Rref
+      );
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([1, 1, 1], 2)
+  ]);
+  const system1Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 0, 0], 1)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system1 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system1Rref,
+    st => {
+      st.plan(1);
+      const { actions } = l.toRref(system1);
+      st.deepEqual(
+        actions.reduce(l.systemstore.reducer, system1),
+        system1Rref
+      );
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([1, 1, -1], 3),
+    new h.Hyperplane([1, 0, -2], 2)
+  ]);
+  const system2Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 0),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([0, 0, 1], -1),
+    new h.Hyperplane([0, 0, 0], 0)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system2 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system2Rref,
+    st => {
+      st.plan(1);
+      const { actions } = l.toRref(system2);
+      st.deepEqual(
+        actions.reduce(l.systemstore.reducer, system2),
+        system2Rref
+      );
+    }
+  );
+
+  const system3 = new l.LinearSystem([
+    new h.Hyperplane([0, 1, 1], 1),
+    new h.Hyperplane([1, -1, 1], 2),
+    new h.Hyperplane([1, 2, -5], 3)
+  ]);
+  const system3Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 23/9),
+    new h.Hyperplane([0, 1, 0], 7/9),
+    new h.Hyperplane([0, 0, 1], 2/9)
+  ]);
+  t.test(
+    'The following reduced row echelon form conversion is successful:\n' +
+    'The system:\n' +
+    system3 + '\n' +
+    'is converted to reduced row echelon form:\n' +
+    system3Rref,
+    st => {
+      st.plan(1);
+      const { actions } = l.toRref(system3);
+      st.deepEqual(
+        actions.reduce(l.systemstore.reducer, system3),
+        system3Rref
+      );
+    }
+  );
+});
