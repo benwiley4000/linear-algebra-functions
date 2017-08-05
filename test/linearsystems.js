@@ -7,6 +7,7 @@
 const test = require('tape');
 const l = require('../lib/linearsystems');
 const h = require('../lib/hyperplanes');
+const fix = require('./testhelpers/fix');
 
 const systemReducer = l.systemstore.reducer;
 const systemActions = l.systemstore.actions;
@@ -747,6 +748,67 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
         actions.reduce(l.systemstore.reducer, system3),
         system3Rref
       );
+    }
+  );
+});
+
+test('Finds solution to a system of linear equations', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([5.862, 1.178, -10.366], -8.15),
+    new h.Hyperplane([-2.931, -0.589, 5.183], -4.075)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system0 + '\n' +
+    'there is no solution',
+    st => {
+      st.plan(2);
+      const { solutionType, solution } = l.solveByGaussianElimination(system0);
+      st.equal(solutionType, 'none');
+      st.notOk(solution);
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([8.631, 5.112, -1.816], -5.113),
+    new h.Hyperplane([4.315, 11.132, -5.27], -6.775),
+    new h.Hyperplane([-2.158, 3.01, -1.727], -0.831)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system1 + '\n' +
+    'there are infinite solutions',
+    st => {
+      st.plan(2);
+      const { solutionType, solution } = l.solveByGaussianElimination(system1);
+      st.equal(solutionType, 'infinite');
+      st.notOk(solution);
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([5.262, 2.739, -9.878], -3.441),
+    new h.Hyperplane([5.111, 6.358, 7.638], -2.152),
+    new h.Hyperplane([2.016, -9.924, -1.367], -9.278),
+    new h.Hyperplane([2.167, -13.593, -18.883], -10.567)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system2 + '\n' +
+    'x = -1.177, y = 0.707, z = -0.083',
+    st => {
+      st.plan(5);
+      const { solutionType, solution } = l.solveByGaussianElimination(
+        system2,
+        // we lose some accuracy with all the row operations
+        // so we need a higher tolerance for zero-ish values
+        0.04
+      );
+      st.equal(solutionType, 'single');
+      st.ok(solution);
+      st.equal(fix(solution[0]), fix(-1.177));
+      st.equal(fix(solution[1]), fix(0.707));
+      st.equal(fix(solution[2]), fix(-0.083));
     }
   );
 });
