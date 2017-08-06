@@ -1,6 +1,15 @@
-# linear-algebra-functions
-A collection of linear algebra utility functions
+# pure-linear-algebra
+A collection of types and pure functions for basic linear algebra operations, written in pure JavaScript.
 
-Initial test cases adapted from Udacity's [Linear Algebra Refresher Course](https://www.udacity.com/course/linear-algebra-refresher-course--ud953)
+Works in Node and the browser!
 
-Don't hesitate to submit additional test cases via pull request!
+This library is suited for interactive computation applications involving vectors, lines, planes, hyperplanes, and systems of equations - particularly Gaussian Elimination. It does not do matrix operations.
+
+This library is not built with the ideal of performance at the forefront, so depending on the application, another library (perhaps [linear-algebra](https://www.npmjs.com/package/linear-algebra)) could be better suited.
+
+Initial test cases adapted from Udacity's [Linear Algebra Refresher Course](https://www.udacity.com/course/linear-algebra-refresher-course--ud953).
+
+## contributing
+Don't hesitate to submit additional documentation, test cases, bug fixes or features via pull request!
+
+If you think something is wrong with the API (totally plausible), please open an issue for discussion before submitting a pull rquest.
