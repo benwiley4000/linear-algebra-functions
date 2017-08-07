@@ -648,6 +648,118 @@ test('Computes reduced row echelon form of a system of equations', t => {
   );
 });
 
+test('Can verify whether system is in reduced row echelon form', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  t.test(
+    'This system IS NOT in reduced row echelon form:\n' +
+    system0,
+    st => {
+      st.plan(1);
+      st.notOk(l.systemIsInRref(system0));
+    }
+  );
+
+  const system0Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], -1),
+    new h.Hyperplane([0, 1, 1], 2)
+  ]);
+  t.test(
+    'This system IS in reduced row echeleon form:\n' +
+    system0Rref,
+    st => {
+      st.plan(1);
+      st.ok(l.systemIsInRref(system0Rref));
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([1, 1, 1], 2)
+  ]);
+  t.test(
+    'This system IS NOT in reduced row echeleon form:\n' +
+    system1,
+    st => {
+      st.plan(1);
+      st.notOk(l.systemIsInRref(system1));
+    }
+  );
+
+  const system1Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 0, 0], 1)
+  ]);
+  t.test(
+    'This system IS in reduced row echeleon form:\n' +
+    system1Rref,
+    st => {
+      st.plan(1);
+      st.ok(l.systemIsInRref(system1Rref));
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([1, 1, 1], 1),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([1, 1, -1], 3),
+    new h.Hyperplane([1, 0, -2], 2)
+  ]);
+  t.test(
+    'This system IS NOT in reduced row echeleon form:\n' +
+    system2,
+    st => {
+      st.plan(1);
+      st.notOk(l.systemIsInRref(system2));
+    }
+  );
+
+  const system2Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 0),
+    new h.Hyperplane([0, 1, 0], 2),
+    new h.Hyperplane([0, 0, 1], -1),
+    new h.Hyperplane([0, 0, 0], 0)
+  ]);
+  t.test(
+    'This system IS in reduced row echeleon form:\n' +
+    system2Rref,
+    st => {
+      st.plan(1);
+      st.ok(l.systemIsInRref(system2Rref));
+    }
+  );
+
+  const system3 = new l.LinearSystem([
+    new h.Hyperplane([0, 1, 1], 1),
+    new h.Hyperplane([1, -1, 1], 2),
+    new h.Hyperplane([1, 2, -5], 3)
+  ]);
+  t.test(
+    'This system IS NOT in reduced row echeleon form:\n' +
+    system3,
+    st => {
+      st.plan(1);
+      st.notOk(l.systemIsInRref(system3));
+    }
+  );
+
+  const system3Rref = new l.LinearSystem([
+    new h.Hyperplane([1, 0, 0], 23/9),
+    new h.Hyperplane([0, 1, 0], 7/9),
+    new h.Hyperplane([0, 0, 1], 2/9)
+  ]);
+  t.test(
+    'This system IS in reduced row echeleon form:\n' +
+    system3Rref,
+    st => {
+      st.plan(1);
+      st.ok(l.systemIsInRref(system3Rref));
+    }
+  );
+});
+
 test('Emits re-runnable actions for producing reduced row echelon form of a system of equations', t => {
   const system0 = new l.LinearSystem([
     new h.Hyperplane([1, 1, 1], 1),
