@@ -894,7 +894,7 @@ test('Finds solution to a system of linear equations', t => {
       st.plan(2);
       const { solutionType, solution } = l.solveByGaussianElimination(system1);
       st.equal(solutionType, 'infinite');
-      st.notOk(solution);
+      st.ok(solution);
     }
   );
 
@@ -921,6 +921,87 @@ test('Finds solution to a system of linear equations', t => {
       st.equal(fix(solution[0]), fix(-1.177));
       st.equal(fix(solution[1]), fix(0.707));
       st.equal(fix(solution[2]), fix(-0.083));
+    }
+  );
+});
+
+test('Finds parameterized solution to system of linear equations', t => {
+  const system0 = new l.LinearSystem([
+    new h.Hyperplane([0.786, 0.786, 0.588], -0.714),
+    new h.Hyperplane([-0.138, -0.138, 0.244], 0.319)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system0 + '\n' +
+    'x = -1.326 - t, y = t, z = 0.558',
+    st => {
+      st.plan(9);
+      const { solutionType, solution } = l.solveByGaussianElimination(system0);
+      st.equal(solutionType, 'infinite');
+      st.equal(solution.basePoint.length, 3);
+      st.equal(solution.directionVectors.length, 1);
+      st.equal(fix(solution.basePoint[0]), fix(-1.326));
+      st.equal(fix(solution.basePoint[1]), fix(0));
+      st.equal(fix(solution.basePoint[2]), fix(0.558));
+      const t = solution.directionVectors[0];
+      st.equal(fix(t[0]), fix(-1));
+      st.equal(fix(t[1]), fix(1));
+      st.equal(fix(t[2]), fix(0));
+    }
+  );
+
+  const system1 = new l.LinearSystem([
+    new h.Hyperplane([8.631, 5.112, -1.816], -5.113),
+    new h.Hyperplane([4.315, 11.132, -5.27], -6.775),
+    new h.Hyperplane([-2.158, 3.01, -1.727], -0.831)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system1 + '\n' +
+    'x = -0.301 - 0.091t, y = -0.492 + 0.509t, z = t',
+    st => {
+      st.plan(9);
+      const { solutionType, solution } = l.solveByGaussianElimination(system1);
+      st.equal(solutionType, 'infinite');
+      st.equal(solution.basePoint.length, 3);
+      st.equal(solution.directionVectors.length, 1);
+      st.equal(fix(solution.basePoint[0]), fix(-0.301));
+      st.equal(fix(solution.basePoint[1]), fix(-0.492));
+      st.equal(fix(solution.basePoint[2]), fix(0));
+      const t = solution.directionVectors[0];
+      st.equal(fix(t[0]), fix(-0.091));
+      st.equal(fix(t[1]), fix(0.509));
+      st.equal(fix(t[2]), fix(1));
+    }
+  );
+
+  const system2 = new l.LinearSystem([
+    new h.Hyperplane([0.935, 1.76, -9.365], -9.955),
+    new h.Hyperplane([0.187, 0.352, -1.873], -1.991),
+    new h.Hyperplane([0.374, 0.704, -3.746], -3.982),
+    new h.Hyperplane([-0.561, -1.056, 5.619], 5.973)
+  ]);
+  t.test(
+    'For the following linear system:\n' +
+    system2 + '\n' +
+    'x = -10.647 - 1.882t + 10.016s, y = t, z = s',
+    st => {
+      st.plan(12);
+      const { solutionType, solution } = l.solveByGaussianElimination(system2);
+      st.equal(solutionType, 'infinite');
+      st.equal(solution.basePoint.length, 3);
+      st.equal(solution.directionVectors.length, 2);
+      st.equal(fix(solution.basePoint[0]), fix(-10.647));
+      st.equal(fix(solution.basePoint[1]), fix(0));
+      st.equal(fix(solution.basePoint[2]), fix(0));
+      const t = solution.directionVectors[0];
+      st.equal(fix(t[0]), fix(-1.882));
+      st.equal(fix(t[1]), fix(1));
+      st.equal(fix(t[2]), fix(0));
+      const s = solution.directionVectors[1];
+      st.equal(fix(s[0]), fix(10.016));
+      st.equal(fix(s[1]), fix(0));
+      st.equal(fix(s[2]), fix(1));
     }
   );
 });
