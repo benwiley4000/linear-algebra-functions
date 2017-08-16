@@ -5,21 +5,21 @@
  **/
 
 const test = require('tape');
-const l = require('../lib/linearsystems');
-const h = require('../lib/hyperplanes');
+const ls = require('../lib/linearsystems');
+const le = require('../lib/linearequations');
 const fix = require('./testhelpers/fix');
 
-const systemReducer = l.systemstore.reducer;
-const systemActions = l.systemstore.actions;
+const systemReducer = ls.systemstore.reducer;
+const systemActions = ls.systemstore.actions;
 
 test('Can perform Gaussian row operations on a system of linear equations', t => {
-  const plane0 = new h.Hyperplane([1, 1, 1], 1);
-  const plane1 = new h.Hyperplane([0, 1, 0], 2);
-  const plane2 = new h.Hyperplane([1, 1, -1], 3);
-  const plane3 = new h.Hyperplane([1, 0, -2], 2);
-  const system0 = new l.LinearSystem([plane0, plane1, plane2, plane3]);
+  const plane0 = new le.LinearEquation([1, 1, 1], 1);
+  const plane1 = new le.LinearEquation([0, 1, 0], 2);
+  const plane2 = new le.LinearEquation([1, 1, -1], 3);
+  const plane3 = new le.LinearEquation([1, 0, -2], 2);
+  const system0 = new ls.LinearSystem([plane0, plane1, plane2, plane3]);
 
-  const system1 = new l.LinearSystem([plane1, plane0, plane2, plane3]);
+  const system1 = new ls.LinearSystem([plane1, plane0, plane2, plane3]);
   t.test(
     'The following row operation is successful:\n' +
     'Swapping rows 0 and 1 in the system:\n' +
@@ -28,11 +28,11 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system1,
     st => {
       st.plan(1);
-      st.deepEqual(l.swapRows(system0, 0, 1), system1);
+      st.deepEqual(ls.swapRows(system0, 0, 1), system1);
     }
   );
 
-  const system2 = new l.LinearSystem([plane1, plane3, plane2, plane0]);
+  const system2 = new ls.LinearSystem([plane1, plane3, plane2, plane0]);
   t.test(
     'The following row operation is successful:\n' +
     'Swapping rows 1 and 3 in the system:\n' +
@@ -41,7 +41,7 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system2,
     st => {
       st.plan(1);
-      st.deepEqual(l.swapRows(system1, 1, 3), system2);
+      st.deepEqual(ls.swapRows(system1, 1, 3), system2);
     }
   );
 
@@ -54,7 +54,7 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system3,
     st => {
       st.plan(1);
-      st.deepEqual(l.swapRows(system2, 3, 1), system3);
+      st.deepEqual(ls.swapRows(system2, 3, 1), system3);
     }
   );
 
@@ -67,14 +67,14 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system4,
     st => {
       st.plan(1);
-      st.deepEqual(l.scalarMultiplyRow(system3, 1, 0), system4);
+      st.deepEqual(ls.scalarMultiplyRow(system3, 1, 0), system4);
     }
   );
 
-  const system5 = new l.LinearSystem([
+  const system5 = new ls.LinearSystem([
     plane1,
     plane0,
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -85,14 +85,14 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system5,
     st => {
       st.plan(1);
-      st.deepEqual(l.scalarMultiplyRow(system4, -1, 2), system5);
+      st.deepEqual(ls.scalarMultiplyRow(system4, -1, 2), system5);
     }
   );
 
-  const system6 = new l.LinearSystem([
+  const system6 = new ls.LinearSystem([
     plane1,
-    new h.Hyperplane([10, 10, 10], 10),
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([10, 10, 10], 10),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -103,7 +103,7 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system6,
     st => {
       st.plan(1);
-      st.deepEqual(l.scalarMultiplyRow(system5, 10, 1), system6);
+      st.deepEqual(ls.scalarMultiplyRow(system5, 10, 1), system6);
     }
   );
 
@@ -116,14 +116,14 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system7,
     st => {
       st.plan(1);
-      st.deepEqual(l.addRowMultipleToAnother(system6, 0, 0, 1), system7);
+      st.deepEqual(ls.addRowMultipleToAnother(system6, 0, 0, 1), system7);
     }
   );
 
-  const system8 = new l.LinearSystem([
+  const system8 = new ls.LinearSystem([
     plane1,
-    new h.Hyperplane([10, 11, 10], 12),
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([10, 11, 10], 12),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -134,14 +134,14 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system8,
     st => {
       st.plan(1);
-      st.deepEqual(l.addRowMultipleToAnother(system7, 1, 0, 1), system8);
+      st.deepEqual(ls.addRowMultipleToAnother(system7, 1, 0, 1), system8);
     }
   );
 
-  const system9 = new l.LinearSystem([
-    new h.Hyperplane([-10, -10, -10], -10),
-    new h.Hyperplane([10, 11, 10], 12),
-    new h.Hyperplane([-1, -1, 1], -3),
+  const system9 = new ls.LinearSystem([
+    new le.LinearEquation([-10, -10, -10], -10),
+    new le.LinearEquation([10, 11, 10], 12),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -152,20 +152,20 @@ test('Can perform Gaussian row operations on a system of linear equations', t =>
     system9,
     st => {
       st.plan(1);
-      st.deepEqual(l.addRowMultipleToAnother(system8, -1, 1, 0), system9);
+      st.deepEqual(ls.addRowMultipleToAnother(system8, -1, 1, 0), system9);
     }
   );
 });
 
 
 test('Can translate action descriptors to Gaussian row operations', t => {
-  const plane0 = new h.Hyperplane([1, 1, 1], 1);
-  const plane1 = new h.Hyperplane([0, 1, 0], 2);
-  const plane2 = new h.Hyperplane([1, 1, -1], 3);
-  const plane3 = new h.Hyperplane([1, 0, -2], 2);
-  const system0 = new l.LinearSystem([plane0, plane1, plane2, plane3]);
+  const plane0 = new le.LinearEquation([1, 1, 1], 1);
+  const plane1 = new le.LinearEquation([0, 1, 0], 2);
+  const plane2 = new le.LinearEquation([1, 1, -1], 3);
+  const plane3 = new le.LinearEquation([1, 0, -2], 2);
+  const system0 = new ls.LinearSystem([plane0, plane1, plane2, plane3]);
 
-  const system1 = new l.LinearSystem([plane1, plane0, plane2, plane3]);
+  const system1 = new ls.LinearSystem([plane1, plane0, plane2, plane3]);
   t.test(
     'The following row operation is successful:\n' +
     'Swapping rows 0 and 1 in the system:\n' +
@@ -184,7 +184,7 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 
-  const system2 = new l.LinearSystem([plane1, plane3, plane2, plane0]);
+  const system2 = new ls.LinearSystem([plane1, plane3, plane2, plane0]);
   t.test(
     'The following row operation is successful:\n' +
     'Swapping rows 1 and 3 in the system:\n' +
@@ -242,10 +242,10 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 
-  const system5 = new l.LinearSystem([
+  const system5 = new ls.LinearSystem([
     plane1,
     plane0,
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -267,10 +267,10 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 
-  const system6 = new l.LinearSystem([
+  const system6 = new ls.LinearSystem([
     plane1,
-    new h.Hyperplane([10, 10, 10], 10),
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([10, 10, 10], 10),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -313,10 +313,10 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 
-  const system8 = new l.LinearSystem([
+  const system8 = new ls.LinearSystem([
     plane1,
-    new h.Hyperplane([10, 11, 10], 12),
-    new h.Hyperplane([-1, -1, 1], -3),
+    new le.LinearEquation([10, 11, 10], 12),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -339,10 +339,10 @@ test('Can translate action descriptors to Gaussian row operations', t => {
     }
   );
 
-  const system9 = new l.LinearSystem([
-    new h.Hyperplane([-10, -10, -10], -10),
-    new h.Hyperplane([10, 11, 10], 12),
-    new h.Hyperplane([-1, -1, 1], -3),
+  const system9 = new ls.LinearSystem([
+    new le.LinearEquation([-10, -10, -10], -10),
+    new le.LinearEquation([10, 11, 10], 12),
+    new le.LinearEquation([-1, -1, 1], -3),
     plane3
   ]);
   t.test(
@@ -367,9 +367,9 @@ test('Can translate action descriptors to Gaussian row operations', t => {
 });
 
 test('Computes triangular form of a system of equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   const system0TriangularForm = system0;
   t.test(
@@ -380,18 +380,18 @@ test('Computes triangular form of a system of equations', t => {
     system0TriangularForm,
     st => {
       st.plan(1);
-      const { system } = l.toTriangularForm(system0);
+      const { system } = ls.toTriangularForm(system0);
       st.deepEqual(system, system0TriangularForm);
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([1, 1, 1], 2)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([1, 1, 1], 2)
   ]);
-  const system1TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 0, 0], 1)
+  const system1TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 0, 0], 1)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -401,22 +401,22 @@ test('Computes triangular form of a system of equations', t => {
     system1TriangularForm,
     st => {
       st.plan(1);
-      const { system } = l.toTriangularForm(system1);
+      const { system } = ls.toTriangularForm(system1);
       st.deepEqual(system, system1TriangularForm);
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([1, 1, -1], 3),
-    new h.Hyperplane([1, 0, -2], 2)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([1, 1, -1], 3),
+    new le.LinearEquation([1, 0, -2], 2)
   ]);
-  const system2TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([0, 0, -2], 2),
-    new h.Hyperplane([0, 0, 0], 0)
+  const system2TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([0, 0, -2], 2),
+    new le.LinearEquation([0, 0, 0], 0)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -426,20 +426,20 @@ test('Computes triangular form of a system of equations', t => {
     system2TriangularForm,
     st => {
       st.plan(1);
-      const { system } = l.toTriangularForm(system2);
+      const { system } = ls.toTriangularForm(system2);
       st.deepEqual(system, system2TriangularForm);
     }
   );
 
-  const system3 = new l.LinearSystem([
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([1, 2, -5], 3)
+  const system3 = new ls.LinearSystem([
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([1, 2, -5], 3)
   ]);
-  const system3TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([0, 0, -9], -2)
+  const system3TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([0, 0, -9], -2)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -449,16 +449,16 @@ test('Computes triangular form of a system of equations', t => {
     system3TriangularForm,
     st => {
       st.plan(1);
-      const { system } = l.toTriangularForm(system3);
+      const { system } = ls.toTriangularForm(system3);
       st.deepEqual(system, system3TriangularForm);
     }
   );
 });
 
 test('Emits re-runnable actions for producing triangular form of a system of equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   const system0TriangularForm = system0;
   t.test(
@@ -469,21 +469,21 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
     system0TriangularForm,
     st => {
       st.plan(1);
-      const { actions } = l.toTriangularForm(system0);
+      const { actions } = ls.toTriangularForm(system0);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system0),
+        actions.reduce(ls.systemstore.reducer, system0),
         system0TriangularForm
       );
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([1, 1, 1], 2)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([1, 1, 1], 2)
   ]);
-  const system1TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 0, 0], 1)
+  const system1TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 0, 0], 1)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -493,25 +493,25 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
     system1TriangularForm,
     st => {
       st.plan(1);
-      const { actions } = l.toTriangularForm(system1);
+      const { actions } = ls.toTriangularForm(system1);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system1),
+        actions.reduce(ls.systemstore.reducer, system1),
         system1TriangularForm
       );
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([1, 1, -1], 3),
-    new h.Hyperplane([1, 0, -2], 2)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([1, 1, -1], 3),
+    new le.LinearEquation([1, 0, -2], 2)
   ]);
-  const system2TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([0, 0, -2], 2),
-    new h.Hyperplane([0, 0, 0], 0)
+  const system2TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([0, 0, -2], 2),
+    new le.LinearEquation([0, 0, 0], 0)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -521,23 +521,23 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
     system2TriangularForm,
     st => {
       st.plan(1);
-      const { actions } = l.toTriangularForm(system2);
+      const { actions } = ls.toTriangularForm(system2);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system2),
+        actions.reduce(ls.systemstore.reducer, system2),
         system2TriangularForm
       );
     }
   );
 
-  const system3 = new l.LinearSystem([
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([1, 2, -5], 3)
+  const system3 = new ls.LinearSystem([
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([1, 2, -5], 3)
   ]);
-  const system3TriangularForm = new l.LinearSystem([
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([0, 0, -9], -2)
+  const system3TriangularForm = new ls.LinearSystem([
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([0, 0, -9], -2)
   ]);
   t.test(
     'The following triangular form conversion is successful:\n' +
@@ -547,9 +547,9 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
     system3TriangularForm,
     st => {
       st.plan(1);
-      const { actions } = l.toTriangularForm(system3);
+      const { actions } = ls.toTriangularForm(system3);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system3),
+        actions.reduce(ls.systemstore.reducer, system3),
         system3TriangularForm
       );
     }
@@ -557,13 +557,13 @@ test('Emits re-runnable actions for producing triangular form of a system of equ
 });
 
 test('Computes reduced row echelon form of a system of equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
-  const system0Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], -1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], -1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -573,18 +573,18 @@ test('Computes reduced row echelon form of a system of equations', t => {
     system0Rref,
     st => {
       st.plan(1);
-      const { system } = l.toRref(system0);
+      const { system } = ls.toRref(system0);
       st.deepEqual(system, system0Rref);
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([1, 1, 1], 2)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([1, 1, 1], 2)
   ]);
-  const system1Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 0, 0], 1)
+  const system1Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 0, 0], 1)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -594,22 +594,22 @@ test('Computes reduced row echelon form of a system of equations', t => {
     system1Rref,
     st => {
       st.plan(1);
-      const { system } = l.toRref(system1);
+      const { system } = ls.toRref(system1);
       st.deepEqual(system, system1Rref);
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([1, 1, -1], 3),
-    new h.Hyperplane([1, 0, -2], 2)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([1, 1, -1], 3),
+    new le.LinearEquation([1, 0, -2], 2)
   ]);
-  const system2Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 0),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([0, 0, 1], -1),
-    new h.Hyperplane([0, 0, 0], 0)
+  const system2Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 0),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([0, 0, 1], -1),
+    new le.LinearEquation([0, 0, 0], 0)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -619,20 +619,20 @@ test('Computes reduced row echelon form of a system of equations', t => {
     system2Rref,
     st => {
       st.plan(1);
-      const { system } = l.toRref(system2);
+      const { system } = ls.toRref(system2);
       st.deepEqual(system, system2Rref);
     }
   );
 
-  const system3 = new l.LinearSystem([
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([1, 2, -5], 3)
+  const system3 = new ls.LinearSystem([
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([1, 2, -5], 3)
   ]);
-  const system3Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 23/9),
-    new h.Hyperplane([0, 1, 0], 7/9),
-    new h.Hyperplane([0, 0, 1], 2/9)
+  const system3Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 23/9),
+    new le.LinearEquation([0, 1, 0], 7/9),
+    new le.LinearEquation([0, 0, 1], 2/9)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -642,132 +642,132 @@ test('Computes reduced row echelon form of a system of equations', t => {
     system3Rref,
     st => {
       st.plan(1);
-      const { system } = l.toRref(system3);
+      const { system } = ls.toRref(system3);
       st.deepEqual(system, system3Rref);
     }
   );
 });
 
 test('Can verify whether system is in reduced row echelon form', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   t.test(
     'This system IS NOT in reduced row echelon form:\n' +
     system0,
     st => {
       st.plan(1);
-      st.notOk(l.systemIsInRref(system0));
+      st.notOk(ls.systemIsInRref(system0));
     }
   );
 
-  const system0Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], -1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], -1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   t.test(
     'This system IS in reduced row echeleon form:\n' +
     system0Rref,
     st => {
       st.plan(1);
-      st.ok(l.systemIsInRref(system0Rref));
+      st.ok(ls.systemIsInRref(system0Rref));
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([1, 1, 1], 2)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([1, 1, 1], 2)
   ]);
   t.test(
     'This system IS NOT in reduced row echeleon form:\n' +
     system1,
     st => {
       st.plan(1);
-      st.notOk(l.systemIsInRref(system1));
+      st.notOk(ls.systemIsInRref(system1));
     }
   );
 
-  const system1Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 0, 0], 1)
+  const system1Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 0, 0], 1)
   ]);
   t.test(
     'This system IS in reduced row echeleon form:\n' +
     system1Rref,
     st => {
       st.plan(1);
-      st.ok(l.systemIsInRref(system1Rref));
+      st.ok(ls.systemIsInRref(system1Rref));
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([1, 1, -1], 3),
-    new h.Hyperplane([1, 0, -2], 2)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([1, 1, -1], 3),
+    new le.LinearEquation([1, 0, -2], 2)
   ]);
   t.test(
     'This system IS NOT in reduced row echeleon form:\n' +
     system2,
     st => {
       st.plan(1);
-      st.notOk(l.systemIsInRref(system2));
+      st.notOk(ls.systemIsInRref(system2));
     }
   );
 
-  const system2Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 0),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([0, 0, 1], -1),
-    new h.Hyperplane([0, 0, 0], 0)
+  const system2Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 0),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([0, 0, 1], -1),
+    new le.LinearEquation([0, 0, 0], 0)
   ]);
   t.test(
     'This system IS in reduced row echeleon form:\n' +
     system2Rref,
     st => {
       st.plan(1);
-      st.ok(l.systemIsInRref(system2Rref));
+      st.ok(ls.systemIsInRref(system2Rref));
     }
   );
 
-  const system3 = new l.LinearSystem([
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([1, 2, -5], 3)
+  const system3 = new ls.LinearSystem([
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([1, 2, -5], 3)
   ]);
   t.test(
     'This system IS NOT in reduced row echeleon form:\n' +
     system3,
     st => {
       st.plan(1);
-      st.notOk(l.systemIsInRref(system3));
+      st.notOk(ls.systemIsInRref(system3));
     }
   );
 
-  const system3Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 23/9),
-    new h.Hyperplane([0, 1, 0], 7/9),
-    new h.Hyperplane([0, 0, 1], 2/9)
+  const system3Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 23/9),
+    new le.LinearEquation([0, 1, 0], 7/9),
+    new le.LinearEquation([0, 0, 1], 2/9)
   ]);
   t.test(
     'This system IS in reduced row echeleon form:\n' +
     system3Rref,
     st => {
       st.plan(1);
-      st.ok(l.systemIsInRref(system3Rref));
+      st.ok(ls.systemIsInRref(system3Rref));
     }
   );
 });
 
 test('Emits re-runnable actions for producing reduced row echelon form of a system of equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
-  const system0Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], -1),
-    new h.Hyperplane([0, 1, 1], 2)
+  const system0Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], -1),
+    new le.LinearEquation([0, 1, 1], 2)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -777,21 +777,21 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
     system0Rref,
     st => {
       st.plan(1);
-      const { actions } = l.toRref(system0);
+      const { actions } = ls.toRref(system0);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system0),
+        actions.reduce(ls.systemstore.reducer, system0),
         system0Rref
       );
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([1, 1, 1], 2)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([1, 1, 1], 2)
   ]);
-  const system1Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 0, 0], 1)
+  const system1Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 0, 0], 1)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -801,25 +801,25 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
     system1Rref,
     st => {
       st.plan(1);
-      const { actions } = l.toRref(system1);
+      const { actions } = ls.toRref(system1);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system1),
+        actions.reduce(ls.systemstore.reducer, system1),
         system1Rref
       );
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([1, 1, 1], 1),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([1, 1, -1], 3),
-    new h.Hyperplane([1, 0, -2], 2)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([1, 1, 1], 1),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([1, 1, -1], 3),
+    new le.LinearEquation([1, 0, -2], 2)
   ]);
-  const system2Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 0),
-    new h.Hyperplane([0, 1, 0], 2),
-    new h.Hyperplane([0, 0, 1], -1),
-    new h.Hyperplane([0, 0, 0], 0)
+  const system2Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 0),
+    new le.LinearEquation([0, 1, 0], 2),
+    new le.LinearEquation([0, 0, 1], -1),
+    new le.LinearEquation([0, 0, 0], 0)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -829,23 +829,23 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
     system2Rref,
     st => {
       st.plan(1);
-      const { actions } = l.toRref(system2);
+      const { actions } = ls.toRref(system2);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system2),
+        actions.reduce(ls.systemstore.reducer, system2),
         system2Rref
       );
     }
   );
 
-  const system3 = new l.LinearSystem([
-    new h.Hyperplane([0, 1, 1], 1),
-    new h.Hyperplane([1, -1, 1], 2),
-    new h.Hyperplane([1, 2, -5], 3)
+  const system3 = new ls.LinearSystem([
+    new le.LinearEquation([0, 1, 1], 1),
+    new le.LinearEquation([1, -1, 1], 2),
+    new le.LinearEquation([1, 2, -5], 3)
   ]);
-  const system3Rref = new l.LinearSystem([
-    new h.Hyperplane([1, 0, 0], 23/9),
-    new h.Hyperplane([0, 1, 0], 7/9),
-    new h.Hyperplane([0, 0, 1], 2/9)
+  const system3Rref = new ls.LinearSystem([
+    new le.LinearEquation([1, 0, 0], 23/9),
+    new le.LinearEquation([0, 1, 0], 7/9),
+    new le.LinearEquation([0, 0, 1], 2/9)
   ]);
   t.test(
     'The following reduced row echelon form conversion is successful:\n' +
@@ -855,9 +855,9 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
     system3Rref,
     st => {
       st.plan(1);
-      const { actions } = l.toRref(system3);
+      const { actions } = ls.toRref(system3);
       st.deepEqual(
-        actions.reduce(l.systemstore.reducer, system3),
+        actions.reduce(ls.systemstore.reducer, system3),
         system3Rref
       );
     }
@@ -865,9 +865,9 @@ test('Emits re-runnable actions for producing reduced row echelon form of a syst
 });
 
 test('Finds solution to a system of linear equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([5.862, 1.178, -10.366], -8.15),
-    new h.Hyperplane([-2.931, -0.589, 5.183], -4.075)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([5.862, 1.178, -10.366], -8.15),
+    new le.LinearEquation([-2.931, -0.589, 5.183], -4.075)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -875,16 +875,16 @@ test('Finds solution to a system of linear equations', t => {
     'there is no solution',
     st => {
       st.plan(2);
-      const { solutionType, solution } = l.solveByGaussianElimination(system0);
+      const { solutionType, solution } = ls.solveByGaussianElimination(system0);
       st.equal(solutionType, 'none');
       st.notOk(solution);
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([8.631, 5.112, -1.816], -5.113),
-    new h.Hyperplane([4.315, 11.132, -5.27], -6.775),
-    new h.Hyperplane([-2.158, 3.01, -1.727], -0.831)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([8.631, 5.112, -1.816], -5.113),
+    new le.LinearEquation([4.315, 11.132, -5.27], -6.775),
+    new le.LinearEquation([-2.158, 3.01, -1.727], -0.831)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -892,17 +892,17 @@ test('Finds solution to a system of linear equations', t => {
     'there are infinite solutions',
     st => {
       st.plan(2);
-      const { solutionType, solution } = l.solveByGaussianElimination(system1);
+      const { solutionType, solution } = ls.solveByGaussianElimination(system1);
       st.equal(solutionType, 'infinite');
       st.ok(solution);
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([5.262, 2.739, -9.878], -3.441),
-    new h.Hyperplane([5.111, 6.358, 7.638], -2.152),
-    new h.Hyperplane([2.016, -9.924, -1.367], -9.278),
-    new h.Hyperplane([2.167, -13.593, -18.883], -10.567)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([5.262, 2.739, -9.878], -3.441),
+    new le.LinearEquation([5.111, 6.358, 7.638], -2.152),
+    new le.LinearEquation([2.016, -9.924, -1.367], -9.278),
+    new le.LinearEquation([2.167, -13.593, -18.883], -10.567)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -910,7 +910,7 @@ test('Finds solution to a system of linear equations', t => {
     'x = -1.177, y = 0.707, z = -0.083',
     st => {
       st.plan(5);
-      const { solutionType, solution } = l.solveByGaussianElimination(
+      const { solutionType, solution } = ls.solveByGaussianElimination(
         system2,
         // we lose some accuracy with all the row operations
         // so we need a higher tolerance for zero-ish values
@@ -926,9 +926,9 @@ test('Finds solution to a system of linear equations', t => {
 });
 
 test('Finds parameterized solution to system of linear equations', t => {
-  const system0 = new l.LinearSystem([
-    new h.Hyperplane([0.786, 0.786, 0.588], -0.714),
-    new h.Hyperplane([-0.138, -0.138, 0.244], 0.319)
+  const system0 = new ls.LinearSystem([
+    new le.LinearEquation([0.786, 0.786, 0.588], -0.714),
+    new le.LinearEquation([-0.138, -0.138, 0.244], 0.319)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -936,7 +936,7 @@ test('Finds parameterized solution to system of linear equations', t => {
     'x = -1.326 - t, y = t, z = 0.558',
     st => {
       st.plan(9);
-      const { solutionType, solution } = l.solveByGaussianElimination(system0);
+      const { solutionType, solution } = ls.solveByGaussianElimination(system0);
       st.equal(solutionType, 'infinite');
       st.equal(solution.basePoint.length, 3);
       st.equal(solution.directionVectors.length, 1);
@@ -950,10 +950,10 @@ test('Finds parameterized solution to system of linear equations', t => {
     }
   );
 
-  const system1 = new l.LinearSystem([
-    new h.Hyperplane([8.631, 5.112, -1.816], -5.113),
-    new h.Hyperplane([4.315, 11.132, -5.27], -6.775),
-    new h.Hyperplane([-2.158, 3.01, -1.727], -0.831)
+  const system1 = new ls.LinearSystem([
+    new le.LinearEquation([8.631, 5.112, -1.816], -5.113),
+    new le.LinearEquation([4.315, 11.132, -5.27], -6.775),
+    new le.LinearEquation([-2.158, 3.01, -1.727], -0.831)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -961,7 +961,7 @@ test('Finds parameterized solution to system of linear equations', t => {
     'x = -0.301 - 0.091t, y = -0.492 + 0.509t, z = t',
     st => {
       st.plan(9);
-      const { solutionType, solution } = l.solveByGaussianElimination(system1);
+      const { solutionType, solution } = ls.solveByGaussianElimination(system1);
       st.equal(solutionType, 'infinite');
       st.equal(solution.basePoint.length, 3);
       st.equal(solution.directionVectors.length, 1);
@@ -975,11 +975,11 @@ test('Finds parameterized solution to system of linear equations', t => {
     }
   );
 
-  const system2 = new l.LinearSystem([
-    new h.Hyperplane([0.935, 1.76, -9.365], -9.955),
-    new h.Hyperplane([0.187, 0.352, -1.873], -1.991),
-    new h.Hyperplane([0.374, 0.704, -3.746], -3.982),
-    new h.Hyperplane([-0.561, -1.056, 5.619], 5.973)
+  const system2 = new ls.LinearSystem([
+    new le.LinearEquation([0.935, 1.76, -9.365], -9.955),
+    new le.LinearEquation([0.187, 0.352, -1.873], -1.991),
+    new le.LinearEquation([0.374, 0.704, -3.746], -3.982),
+    new le.LinearEquation([-0.561, -1.056, 5.619], 5.973)
   ]);
   t.test(
     'For the following linear system:\n' +
@@ -987,7 +987,7 @@ test('Finds parameterized solution to system of linear equations', t => {
     'x = -10.647 - 1.882t + 10.016s, y = t, z = s',
     st => {
       st.plan(12);
-      const { solutionType, solution } = l.solveByGaussianElimination(system2);
+      const { solutionType, solution } = ls.solveByGaussianElimination(system2);
       st.equal(solutionType, 'infinite');
       st.equal(solution.basePoint.length, 3);
       st.equal(solution.directionVectors.length, 2);
