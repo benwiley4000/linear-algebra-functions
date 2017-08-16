@@ -1,9 +1,9 @@
 const vectors = require('./lib/vectors');
-const hyperplanes = require('./lib/hyperplanes');
+const linearequations = require('./lib/linearequations');
 const linearsystems = require('./lib/linearsystems');
 
 module.exports = {
   vectors,
-  hyperplanes,
+  linearequations,
   linearsystems
 };
