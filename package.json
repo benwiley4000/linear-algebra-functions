@@ -1,9 +1,17 @@
 {
-  "name": "linear-algebra-functions",
+  "name": "pure-linear-algebra",
   "version": "0.1.0",
-  "description": "A collection of linear algebra functions",
+  "description": "Types and pure functions for basic linear algebra operations",
   "main": "index.js",
+  "bundled": "dist/pure-linear-algebra.js",
+  "bundled-min": "dist/pure-linear-algebra.min.js",
   "scripts": {
+    "build:clean": "rimraf dist && mkdirp dist",
+    "build:umd": "browserify index.js -o dist/pure-linear-algebra.js -s pureLinearAlgebra -t babelify",
+    "build:uglify": "uglifyjs dist/pure-linear-algebra.js -o dist/pure-linear-algebra.min.js",
+    "build": "npm run build:clean && npm run build:umd && npm run build:uglify",
+    "dev": "mkdirp dist && watchify index.js -o dist/pure-linear-algebra.js -s pureLinearAlgebra -t babelify",
+    "prepublish": "npm run build",
     "test": "tape test/*.js | tap-spec"
   },
   "keywords": [
@@ -24,7 +32,14 @@
   },
   "homepage": "https://github.com/benwiley4000/linear-algebra-functions#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.1",
     "tap-spec": "^4.1.1",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "uglify-js": "^3.0.27",
+    "watchify": "^3.9.0"
   }
 }
