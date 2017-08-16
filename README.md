@@ -9,6 +9,23 @@ This library is not built with the ideal of performance at the forefront, so dep
 
 Initial test cases adapted from Udacity's [Linear Algebra Refresher Course](https://www.udacity.com/course/linear-algebra-refresher-course--ud953).
 
+### CDN scripts
+
+If you're not using npm, you can include one of these in your HTML file:
+
+* [https://unpkg.com/pure-linear-algebra?main=bundled](https://unpkg.com/pure-linear-algebra?main=bundled) (Unminified)
+* [https://unpkg.com/pure-linear-algebra?main=bundled-min](https://unpkg.com/pure-linear-algebra?main=bundled-min) (Minified)
+
+```html
+<!-- unminified -->
+<script src="https://unpkg.com/pure-linear-algebra@0.3.0?main=bundled"></script>
+
+<!-- minified -->
+<script src="https://unpkg.com/pure-linear-algebra@0.3.0?main=bundled-min"></script>
+```
+
+This will expose `pureLinearAlgebra` as a global variable.
+
 ## contributing
 Don't hesitate to submit additional documentation, test cases, bug fixes or features via pull request!
 
