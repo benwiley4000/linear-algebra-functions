@@ -19,7 +19,9 @@
     "algebra",
     "matrix",
     "matrices",
-    "math"
+    "math",
+    "gaussian",
+    "elimination"
   ],
   "author": "Ben Wiley",
   "license": "MIT",
