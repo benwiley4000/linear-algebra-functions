@@ -26,10 +26,10 @@ If you're not using npm, you can include one of these in your HTML file:
 
 ```html
 <!-- unminified -->
-<script src="https://unpkg.com/pure-linear-algebra@0.1.0?main=bundled"></script>
+<script src="https://unpkg.com/pure-linear-algebra@0.1.1?main=bundled"></script>
 
 <!-- minified -->
-<script src="https://unpkg.com/pure-linear-algebra@0.1.0?main=bundled-min"></script>
+<script src="https://unpkg.com/pure-linear-algebra@0.1.1?main=bundled-min"></script>
 ```
 
 This will expose `pureLinearAlgebra` as a global variable.

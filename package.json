@@ -1,6 +1,6 @@
 {
   "name": "pure-linear-algebra",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Types and pure functions for basic linear algebra operations",
   "main": "index.js",
   "bundled": "dist/pure-linear-algebra.js",
